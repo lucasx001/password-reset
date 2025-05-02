@@ -6,11 +6,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { signIn } from '@/server-action/sign-in';
+import { toast } from 'sonner';
 interface SignInProps {
     signIn: (email: string, password: string) => Promise<void>;
 }
 
-const SignIn: React.FC<SignInProps> = ({ signIn }) => {
+const SignIn: React.FC<SignInProps> = () => {
     // 1. Define your form.
     const signInForm = useForm<SignInSchema>({
         resolver: zodResolver(signInSchema),
@@ -23,7 +26,20 @@ const SignIn: React.FC<SignInProps> = ({ signIn }) => {
     const onSubmit = async (values: SignInSchema) => {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values)
+        try {
+
+            const res = await signIn(values.email, values.password);
+            if (res.code !== 200) {
+                // Handle error (e.g., show a notification)
+                toast.error(res.message);
+                return;
+            }
+            toast.success(res.message);
+            
+        } catch (error) {
+            console.error("Sign in failed:", error);
+            // Handle error (e.g., show a notification)
+        }
     };
 
     return (
