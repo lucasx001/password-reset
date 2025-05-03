@@ -6,7 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { signIn } from '@/server-action/sign-in';
 import { toast } from 'sonner';
 interface SignInProps {
@@ -27,7 +26,6 @@ const SignIn: React.FC<SignInProps> = () => {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         try {
-
             const res = await signIn(values.email, values.password);
             if (res.code !== 200) {
                 // Handle error (e.g., show a notification)

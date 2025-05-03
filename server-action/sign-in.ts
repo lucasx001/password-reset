@@ -26,7 +26,7 @@ export async function signIn(email: string, password: string) {
     const jwt = await signJWT({
         email: user.email,
         id: user.id,
-    }, (globalThis as unknown as Global).privateKey, new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)); // 7 days expiration
+    }, process.env.JWT_PRIVATE_KEY || '', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)); // 7 days expiration
     (await cookies()).set('session', jwt)
     // Return the user
     return redirect('/home');

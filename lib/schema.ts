@@ -16,3 +16,5 @@ export const signUpSchema = z.object({
         message: "Passwords don't match",
     })
 export type SignUpSchema = z.infer<typeof signUpSchema>
+
+
